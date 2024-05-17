@@ -1,0 +1,33 @@
+class Post extends Model
+{
+public function comments()
+{
+return $this->hasMany(Comment::class);
+}
+}
+
+
+class Comment extends Model
+{
+public function post()
+{
+return $this->belongsTo(Post::class);
+}
+}
+
+
+Schema::create('posts', function (Blueprint $table) {
+$table->id();
+$table->string('title');
+$table->text('content');
+$table->timestamps();
+});
+
+
+Schema::create('comments', function (Blueprint $table) {
+$table->id();
+$table->unsignedBigInteger('post_id');
+$table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+$table->text('content');
+$table->timestamps();
+});
